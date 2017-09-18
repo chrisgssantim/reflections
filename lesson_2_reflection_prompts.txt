@@ -1,18 +1,134 @@
-What happens when you initialize a repository? Why do you need to do it?
+﻿Commando ls –a, mostra os arquivos ocultos de determinado repositório. Estes arquivos começam com .
+Para iniciar, ou criar, um repositório git, use o comando: git init
+HEAD representa o commit atual do seu código !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Christiano Santim ((71d5270...) *) pappu-pakia $ cd ~
+Christiano Santim ~ $ cd version-control
+Christiano Santim version-control $ cd reflections
+Christiano Santim reflections $ git init
+Initialized empty Git repository in C:/Users/Christiano Santim/version-control/reflections/.git/
+Christiano Santim (master #) reflections $ git status
+On branch master
 
-How is the staging area different from the working directory and the repository?
-What value do you think it offers?
+No commits yet
 
-How can you use the staging area to make sure you have one commit per logical
-change?
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
 
-What are some situations when branches would be helpful in keeping your history
-organized? How would branches help?
+        lesson_1_reflection_prompts.txt
 
-How do the diagrams help you visualize the branch structure?
+nothing added to commit but untracked files present (use "git add" to track)
+Christiano Santim (master #) reflections $
 
-What is the result of merging two branches together? Why do we represent it in
-the diagram the way we do?
+Acima, criou-se um repositório git com o comando git init. Com o comando git status pode-se verificar o status/o que ocorreu até então no repositório. Com ls –a, aparece todos os arquivos do repositório, inclusive os ocultos.
+Christiano Santim (master #) reflections $ ls -a
+./  ../  .git/  lesson_1_reflection_prompts.txt
 
-What are the pros and cons of Git’s automatic merging vs. always doing merges
-manually?
+	Fazendo alterações em um repositório:
+Comando git add file... file é o nome do arquivo: adiciona arquivos para a área de preparo do repositório. Área de preparação  staging área
+Como escrever uma mensagem de commit
+Você está prestes a fazer seu primeiro commit no seu repositório reflections. Ao fazer isso, você precisará escrever uma mensagem de commit descrevendo suas alterações. Se você seguiu as instruções no vídeo \"Configuração de sua área de trabalho\" da sua plataforma perto do fim da Lição 1, o editor escolhido aparecerá assim que git commit for executado e permitirá que você escreva uma mensagem de commit. Se você receber uma mensagem de erro, releia as instruções na Lição 1 e assegure que seu editor de texto esteja configurado corretamente.
+Também é possível especificar uma mensagem de commit por meio da linha de comando, executando git commit -m "Commit message", em vez de apenas git commit. Ainda é uma boa ideia usar um editor configurado, uma vez que será mais fácil escrever mensagens de commit longas que descrevam completamente a alteração.
+
+Aula 3 – Lesson 2 – Item 11 (Quis git diff revisto)
+Arquivos constantes na área de preparação (staging area) e no diretório (working directory) não possuem ID, uma vez que não são commits. Assim, para comparar o diretório com a área de preparação fazemos: git diff. Git diff sem argumentos (IDs) faz isso.
+O comando git diff –staged mostra a diferença entre o arquivo da área de preparação e do repositório (commit mais recente do repositório).
+O comando git reset –hard exclui as alterações presentes na área de preparação ou no diretório as quais eu não quero colocar no commit que gostaria de criar. Trata-se de uma ação irreversível, portanto, deve-se tomar muito cuidado.
+	BRANCHES
+Até o momento, a criação de commits foi linear, baseando-se sempre no commit anterior.
+Teremos um branch principal (ramificação) criada automaticamente pelo git ao se dar o comando git init e criar um repositório.
+1)	Master: branch principal na maioria dos repositórios git;
+Para se fazer um branch, utiliza-se o comando git branch “nome”. Usando-se git branch sem argumentos/nome, é mostrado na tela os branches existentes naquele repositório.
+Em suma, um branch serve para ramificar uma ação dentro do projeto, tal qual concertar um bug. Ou seja, é interessante deixarmos o branch máster apenas com o que funciona, com a linha principal do projeto.
+Branches para colaboração
+ 
+Criação de um novo branch: Coins.
+Action: Collect coins by hitting with ship
+O git ajuda na visualização da estrutura de braches usado:
+git log –graph –oneline (oneline: torna a saída mais curta)
+Caso queira informar quais branches você quer visualizar, adicione os nomes, seguindos de espaço, no comando prévio. Supondo que queriamos ver os branches master e coins, fica:
+git log –graph –oneline master coins
+É importante termos em mente que o comando git log nos mostra os commits presentes em cada linha do branch, não entrando em ramificações adicionais, partindo do commit mais atual para o commit de origem de determinado branch.
+HEAD desanexado revisto: a mensagem de head desanexado (detached) se dá quando execultamos um checkout de um commit, e não de um branch !!!
+Aqui surbe o comando git checkout –b, que é equivalente a criar um branch fazendo-se uso do comando git branch “nome” e depois dar um checkout neste branch criado.
+Como combinar a alteração de vários branches em uma versão????????????
+Estratégia do Git para permitir a fusão de dois branches: deve-se escolher o branch que será atualizado. Os pais deste novo commit são provenientes do branch coins e master, no entanto a este merge se torna a nova ponta do master, que é o branch a ser atualizado com informações do branch coins através de um commit de fusão/merge.
+IMPORTANTE: Qando você funde o branch coins ao branch master, você poderá apagar o label do branc coins, uma vez que feita a fusão, seus commits já farão parte do branch master. No entanto tome cuidado, pois caso você delete o label do branch antes da fusão, o mapeamento de tais commits (pertencente ao branch coins) se torna inviável.
+Cabe citar que:
+Se um branch for excluído e deixar alguns commits inacessíveis de branches existentes, esses commits continuarão acessíveis por id do commit, até a coleta de lixo do Git ser executada. Isso acontecerá automaticamente de vez em quando, a menos que você desative essa opção. Também é possível executar esse processo manualmente com git gc.
+
+A ordem em que os commits aparecem no git log após a fusão dos branches coins e master, se dá pela hora em que os commits foram criados, portanto, as IDs podem aparecer de maneira intercalada. Assim, usar o comando git diff commitold commitnew pode ser um problema, pois o commitold pode não ser o commit pai do que se quer verificar as mudanças/comparar. Desta maneira, dando o comando git show commitold, podemos comparar os commits pai com o seu commit imediatamente novo.
+
+
+É importante mencionar que os commits que deram origem ao commit de fusão (merged commit) também aparecem no git log. Os comandos  usados para a fusão e para deletar são dados por:
+git merge master coins (primeiro o branch que se quer atualizar, depois o que poderá ser deletado, em vias de se manter a organização de determinado projeto).
+ git branch -d coins (deleta o brainch coins).
+git merge –abort (aborta a fusão).
+Você sempre deve fazer check-out de um dos dois branches que esteja planejando mesclar, antes de realizar a mesclagem. O branch cujo check-out você deve realizar depende de qual rótulo do branch você deseja apontar para o novo commit.
+Como o branch com check-out sempre é incluído na mesclagem, talvez você já tenha imaginado que, ao mesclar dois branches, não é preciso especificar ambos como argumentos para git merge na linha de comando. Se você quiser mesclar branch2 em branch1, poderá simplesmente git checkout branch1 e depois digitar git merge branch2. O único motivo para digitar git merge branch1 branch2 é se isso ajudar a manter um melhor controle mental de quais branches você está mesclando.
+
+
+Nem sempre o Git conseguirá mesclar os branches automticamente. Desta maneira o usuário deve o fazer manualmente. Segue abaixo tela com o referido caso.
+Christiano Santim (master) asteroids $ git checkout easy-mode
+Switched to branch 'easy-mode'
+Christiano Santim (easy-mode) asteroids $ git merge master easy-mode
+Auto-merging game.js
+CONFLICT (content): Merge conflict in game.js
+Automatic merge failed; fix conflicts and then commit the result.
+Christiano Santim (easy-mode *+|MERGING) asteroids $ subl game.js
+Christiano Santim (easy-mode *+|MERGING) asteroids $ git status
+On branch easy-mode
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+        both modified:   game.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Christiano Santim (easy-mode *+|MERGING) asteroids $ git add game.js
+Christiano Santim (easy-mode +|MERGING) asteroids $ git status
+On branch easy-mode
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+
+        modified:   game.js
+
+Christiano Santim (easy-mode +|MERGING) asteroids $ git commit
+[easy-mode f0a6f5c] Merge branch 'master' into easy-mode
+Christiano Santim (easy-mode) asteroids $ git log
+commit f0a6f5c3f3f4fb9c453be67e228ace2c632ac6a7 (HEAD -> easy-mode)
+Merge: 340a462 2e09e68
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 15:12:33 2017 -0300
+
+    Merge branch 'master' into easy-mode
+
+commit 2e09e68127b992a6ccb184cb9e981438b59cd417 (master)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 14:46:06 2017 -0300
+
+    Make coin collor yellow
+
+commit 13fd1d6c9d44d25cc137f1e8d27f312b99a08a1e
+Merge: 552954c 354dfdd
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 13:57:30 2017 -0300
+
+    Merge branch 'coins'
+
+commit 552954c6d47140c31a122e76052a1a9685e03fb4
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 13:54:38 2017 -0300
+Christiano Santim (easy-mode) asteroids $
+Christiano Santim (easy-mode) asteroids $ git log -n 1
+commit f0a6f5c3f3f4fb9c453be67e228ace2c632ac6a7 (HEAD -> easy-mode)
+Merge: 340a462 2e09e68
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 15:12:33 2017 -0300
+
+    Merge branch 'master' into easy-mode
+Christiano Santim (easy-mode) asteroids $

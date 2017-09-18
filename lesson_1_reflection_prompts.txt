@@ -1,45 +1,121 @@
-How did viewing a diff between two versions of a file help you see the bug that
- was introduced?
+AULA 1: Navegação de um histórico de commit
 
-    
-Through comparison between two segments of similar code (choosed by the command fc or diff), in which we know that some difference exist, it is very useful. Spend less time.
+Consiste da visualização do histórico de um projeto existente.
+Para entrar na tela de prompt do Windows digitar cmd em Pesquisar.
+FC (Windows)    cd.. volta diretório cd barra space e o nome do diretório, entra no diretório seguinte.
+C:\Users\cbuckey\Downloads>FC favorite-app-old.html favorite-app.html
+Comparing files favorite-app-old.html and FAVORITE-APP.HTML
+…So, the segments that presented changes will appear bellow after five *.
+
+Diff (Linux or MAC)
+cbuckey ~ $ cd Downloads/
+cbuckey Downloads $ diff –u game_old.js game_new.js
+…So, the segments that presented changes will appear bellow in a different way if compared with the Windows platform.
+
+!*************** PROMPT SCREEN - Windows ******************
+Microsoft Windows [versão 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. Todos os direitos reservados.
+
+C:\Users\Christiano Santim>Downloads>FC game_old.js game_new.js
+'Downloads' não é reconhecido como um comando interno
+ou externo, um programa operável ou um arquivo em lotes.
+
+C:\Users\Christiano Santim>cp Downloads
+'cp' não é reconhecido como um comando interno
+ou externo, um programa operável ou um arquivo em lotes.
+
+C:\Users\Christiano Santim>cd Downloads
+
+C:\Users\Christiano Santim\Downloads>FC game_old.js game_new.js
+Comparando os arquivos game_old.js e GAME_NEW.JS
+***** game_old.js
+KEY_CODES = {
+  32: 'space',
+***** GAME_NEW.JS
+KEY_CODES = {
+  13: 'enter',
+  32: 'space',
+*****
+
+***** game_old.js
+  37: 'left',
+  38: 'up',
+  39: 'right',
+***** GAME_NEW.JS
+  37: 'left',
+  39: 'right',
+*****
+
+***** game_old.js
+
+    if (KEY_STATUS.up) {
+      var rad = ((this.rot-90) * Math.PI)/180;
+***** GAME_NEW.JS
+
+    if (KEY_STATUS.spacr) {
+      var rad = ((this.rot-90) * Math.PI)/180;
+*****
+
+***** game_old.js
+    }
+    if (KEY_STATUS.space) {
+      if (this.delayBeforeBullet <= 0) {
+***** GAME_NEW.JS
+    }
+    if (KEY_STATUS.enter) {
+      if (this.delayBeforeBullet <= 0) {
+*****
+
+***** game_old.js
+      if (KEY_STATUS.space || window.gameStart) {
+        KEY_STATUS.space = false; // hack so we don't shoot right away
+        window.gameStart = false;
+***** GAME_NEW.JS
+      if (KEY_STATUS.space || window.gameStart) {
+        KEY_STATUS.space = false; // hack so we don't move right away
+        window.gameStart = false;
+*****
+C:\Users\Christiano Santim\Downloads>
+!************************ END OF PROMPT SCREEN *******	
 
 
-How could having easy access to the entire history of a file make you a more
- efficient programmer in the long term?
+cd ~                          # change directories to your home directory
+mkdir version-control         # make version-control directory
+cd version-control            # go to version-control directory
+mkdir reflections             # create reflections directory
+cd reflections                # go to reflections directory
+subl lesson_1_reflections.txt # launch sublime with file called lesson_1_reflections.txt (you can replace subl with another editor here if you prefer a different one)
+Na terminologia do Git, commits são os pontos de verificação criados pelo usuário. O Git permite uma mensagem para cada commit, facilitando assim a sua organização por alterações seguindo lógicas.
+Cada commit possui uma mensagem (é opcional) e uma ID, além do Author e de uma data (date).
+O git diff nos mostra a diferença do código entre dois commits. Para tanto deve-se copiar a ID de ambos, como:
+Cbuckey asteroids $ git diff ac83gwdw827487289ry439 75928anofur9837y38t05g4u9g4
+Conforme o diff entre duas versões aumenta de tamanho, ele fica mais difícil de entender e menos útil. No entanto, você não quer limitar tanto seus commits. Se você sempre salvar um commit a cada vez que alterar uma linha de código, seu histórico será mais difícil de ler, pois terá um grande número de commits durante um período curto.
+O Git permite a você escrever uma mensagem curta explicando o que mudou em cada commit, e essa mensagem será mais útil se cada commit tiver uma única alteração lógica.
+O comando git log mostra todos os commits já feitos num determinado código.
+Comando –stat                  ? fornece estatísticas sobre quais arquivos foram alterados em cada commit. O sinal de + verde indica adição e o sinal de – vermelho indica subtração. O número dos sinais é proporcional ao tamanho da alteração.
+Para obter informação sobre como usar determinado comando no Git, entre com git help <command>   Este comando pode ser o “diff” para fazer um primeiro teste.
+O comando git clone, cria um clone do repositório. Para usá-lo, entre com git clone seguido por um espaço e por uma URL.
+O comando q, de quit, interrompe a visualização da saída do git log.
+A pasta version-control que contém os arquivos usados anterrmente game_new, game_old e a pasta reflections está no diretório C:\Users\Christiano Santim>
+Comando git checkout, é como restaurar uma versão anterior. Restaura todos os arquivos para o modo como estavam no momento e que o commit foi feito.
+A inserção de ID do commit pode ser feito com pelo menos quatro primeiros caracteres.
+Caso você dê um git checkout no commit mais antigo, o seu prmeiro (mais atual) que aparecerá pode não ser o mais atual de fato, dependendo da quantidade de commits. Sendo assim, se você quiser atualizar a lista, basta dar o comando git checkout <id> do commit mais recente de fato. Mas e se você se esquecer desta id?
+Commit mais recente
+A ID do commit mais recente é 3884eab839af1e82c44267484cf2945a766081f3. Você pode usar essa ID do commit para retornar para o último commit depois de fazer check-out de um commit mais antigo.
+Relembrando que este é o diretório raiz: C:\Users\Christiano Santim
+No Git, gera-se um commit para cada versão de determinado arquivo, sem modificar o nome do arquivo !
+O comando git diff deve conter o commit mais antigo primeiro com o commit imediatamente atual em seguindo após um espaço. 
+Behavior of git checkout
+Checking out an earlier commit will change the state of at least one file.
+This is sometimes true. Git doesn't allow you to save a new commit if no files have been updated, so you might think this is always true. However, it's possible to do the following:
+•	Save a commit (call this commit 1).
+•	Update some files and save another commit (call this commit 2).
+•	Change all the files back to their state during commit 1 (git checkout commit1), then save again (call this commit 3).
+This sometimes happens if commit 2 contained a bug, and it's important to fix the bug quickly. The easiest thing to do might be to remove all the changes introduced by commit 2 to fix the bug, then figure out how to safely reintroduce the changes later.
+VERY IMPORTANT !!!!!!!!!!!! At this point, commit 3 is the latest commit, so if you checkout commit 1, none of the files will be changed. 
+Checking out an earlier commit will change the state of more than one file.
+Checking out an earlier commit will change the state of every file in the repository.
+Both of these are sometimes true. Since each commit tracks the state of all files in the repository, it is possible that checking out an earlier commit will change the state of multiple files, or even all the files in the repository. However, it is possible to save a new commit after changing only one file, so it is possible only one file will change. 
+After checking out a commit, the state of all the files in the repository will be from the same point in time.
+This is always true. A commit saves a snapshot of all files in the repository at the time the commit was made, so checking out an earlier commit will result in all the files being reverted to their state at the time the commit was made. That is, the files will be in a consistent state.
 
-    
-Time is too short in the industry.There are many deadlines and so on. So, when we have an easy access, with the tools helping with the errors, we need to use. It shoud be cited that
-the access to the entire history of the file show us how our programming language was used in the past, some vicious, etc. which nowadays can be dangerous for the current code.
-
-
-What do you think are the pros and cons of manually choosing when to create a 
-commit, like you do in Git, vs having versions automatically saved, like Google 
-docs does?
-
-    
-
-
-
-Why do you think some version control systems, like Git, allow saving multiple
-files in one commit, while others, like Google Docs, treat each file separately?
-
-  
-  
-
-
-How can you use the commands git log and git diff to view the history of files?
-
- 
-   
-
-
-How might using version control make you more confident to make changes that
-could break something?
-
-    
-
-
-Now that you have your workspace set up, what do you want to try using Git for?
-
-    
