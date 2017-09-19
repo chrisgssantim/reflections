@@ -1,4 +1,4 @@
-Usando o GitHub
+﻿Usando o GitHub
 O github não permite a clonagem diretamente em seus servidores. Então, primeiramente necessitamos da criação de um repositório vazio no GitHub.
 Adicionando remotes via prompt Gitbash:
 Comando git remote mostra os remotes já criados. Para criar um adiciona-se ao git remote add seguido de um nome/argumento.
@@ -96,3 +96,42 @@ Se clicarmos na lista de commits do Githubs veremos apenas as commits enviadas p
 Diretamente do site do github pode-se criar e editar arquivos de texto !!!!!!!!
 Também via Github pode-se criar commits diretamente, os quais podem ser editados por outros usuários além de quem os criou. O primeiro commit a ser criado via Github será o arquivo lesson_3_reflection_prompts.txt, que terá a priori o conteúdo desta seção referente a aula 3 neste presente documento.
 © 2017 GitHub, Inc.
+
+Agora a versão local está desatualizada (precisa-se atualizar o braanch master no computador local) em relação à versão remota do GitHub. Para que os repositórios fiquem sincronizados novamente, efetua-se o comando: git pull.
+Entrando com git pull origin master, tem-se que:
+Christiano Santim (master) reflections $ git log
+commit b93ee0cd145769d8572ec4df6444d741de89eab0 (HEAD -> master, origin/master)
+Author: chrisgssantim <32075180+chrisgssantim@users.noreply.github.com>
+Date:   Mon Sep 18 17:31:43 2017 -0300
+
+    Summary_lesson 3
+
+commit c4c7d69fd49821f293574feea2043faddac6caf2
+Author: chrisgssantim <32075180+chrisgssantim@users.noreply.github.com>
+Date:   Mon Sep 18 17:29:18 2017 -0300
+
+    Delete lesson_3_reflection_prompts
+
+commit 617e2a590e55ba77a29a13e0a54fbee7e05c5603
+Author: chrisgssantim <32075180+chrisgssantim@users.noreply.github.com>
+Date:   Mon Sep 18 17:28:03 2017 -0300
+
+    Create file for lesson 3 and add first reflection
+
+    Consists of a brief summary
+
+commit 3376e9c07762e952038307f99ccb0150ee89deb2
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Mon Sep 18 16:34:38 2017 -0300
+:
+
+O comando git remote rm nomedorepositórioremoto deleta o repositório remoto.
+Como bifurcar um repositório (Forking a repository)
+Larry possui um repositório no github chamado de receitas. Caroline que Sarah querem fazer modificações em algumas receitas/arquivos. Sendo assim, Caroline clona o repositório de Larry para seu personal computer (local) e esta ação configura automaticamente este repositório como remoto, de nome origin. Depois cria-se um repositório no github com a conta da Caroline, que também terá o nome de receitas. Caroline então configura seu novo repositório como remote, e pode dar o nome que quiser. Nesta etapa será our version. Assim, ela pode enviar as alterações para seu repositório remoto receitas no github usando o comando git push. Como Sarah também quer contribuir com o repositório de Caroline, ela então o clona para o seu computador, configurando a versão de Caroline como origin. 
+Desta maneira, toda e qualquer mudança feita por Sarah, não dará crédito nenhum ao repositório do Larry.
+A bifurcação é muito parecida com a clonagem. No entanto, uma bifurcação (fork) é um clone que o GitHub cria para você na máquina dele (no sistema do GitHub). Assim, Caroline clona o repositório de Larry no próprio GitHUb (forked from Larry/receitas). Depois, Caroline e Sarah podem cada uma clonar em seus respectivos computadores este repositório clonado dentro do GitHub.
+Efeitos colaterais: o github controla o número de pessoas que fizeram bifurcação e todas as bifurcações são vinculadas ao repositório original no GitHub.
+Onde estava seu commit?
+Antes de executar git push, sua alteração deve ter existido apenas localmente via git log. Os commits não serão compartilhados automaticamente em remotos - você precisa efetuar push manualmente no branch para compartilhar alterações.
+Após executar git push, sua alteração deve ter existido localmente e na bifurcação. Ela não deve ter existido no repositório de Larry, que é o repositório que você bifurcou. Em primeiro lugar, você bifurcou porque não tem permissão para alterar o repositório de Larry!
+
