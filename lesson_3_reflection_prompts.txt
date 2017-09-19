@@ -95,7 +95,7 @@ Após comando git push, o branch local é o mesmo que será levado para o github
 Se clicarmos na lista de commits do Githubs veremos apenas as commits enviadas para a plataforma, ou seja, não necessariamente representam o local do nosso computador, onde podemos verificar todas as commits de determinado repositório mediante uso do comando git log.
 Diretamente do site do github pode-se criar e editar arquivos de texto !!!!!!!!
 Também via Github pode-se criar commits diretamente, os quais podem ser editados por outros usuários além de quem os criou. O primeiro commit a ser criado via Github será o arquivo lesson_3_reflection_prompts.txt, que terá a priori o conteúdo desta seção referente a aula 3 neste presente documento.
-Agora a versão local está desatualizada (precisa-se atualizar o braanch master no computador local) em relação à versão remota do GitHub. Para que os repositórios fiquem sincronizados novamente, efetua-se o comando: git pull.
+Agora a versão local está desatualizada (precisa-se atualizar o branch master no computador local) em relação à versão remota do GitHub. Para que os repositórios fiquem sincronizados novamente, efetua-se o comando: git pull.
 Entrando com git pull origin master, tem-se que:
 Christiano Santim (master) reflections $ git log
 commit b93ee0cd145769d8572ec4df6444d741de89eab0 (HEAD -> master, origin/master)
@@ -371,8 +371,268 @@ Christiano Santim (different-oil) recipes $
 
 Agora deve-se fazer um pull request (um outro nome para esta ação seria pull merge) no novo branch different-oil.
 Isto é feito via GH. E agora a Sarah poderá ver que Chris, através do pull request, gostaria de fundir as alterações no branch master.
-Bom, Chris quer que Sarah faça um merge do seu branch different-oil no branch master. Opa, mas Sarah ao analisar o pull request verificou um erro de ortografia, o qual deveria ser corrigido. Assim, Sarah pode deixar comentários de duas maneiras. Usando a toll write logo abaixo ao commit, ou comentar inline clicando no sinal de +.
+Bom, Chris quer que Sarah faça um merge do seu branch different-oil no branch master. Opa, mas Sarah ao analisar o pull request verificou um erro de ortografia (no de Caroline, não aqui), o qual deveria ser corrigido. Assim, Sarah pode deixar comentários de duas maneiras. Usando a toll write logo abaixo ao commit, ou comentar inline clicando no sinal de +.
 Cabe citar que o botão para Sarah clicar caso estivesse tudo OK seria o MERGE PULL REQUEST. Quando este botão está habilitado, sinaliza que não existe conflito entre as versões a serem fundidas. Para evitar potenciais erros, de maneira que o merge não seja possível, é preferível que o Chris faça primeiramente a fusão com seu branch master local. Assim, caso ocorra conflitos, o Chris poderia resolvê-los, antes executar um pull request para outra(o) pessoa/usuário.
 Em suma, uma requisição pull request fará um merge entre branches no GH.
  
-No quadro do meio acima, este merge entre branches ocorreu no GH, mas ainda não foi passado para o repositório local. Para tanto necessita-se de um git pull origin master
+No quadro do meio acima, este merge entre branches ocorreu no GH, mas ainda não foi passado para o repositório local. Para tanto necessita-se de um git pull origin master.
+Alterações conflitantes
+Bom, além de comentar sobre o pull request, Sarah pediu para que fosse adicionado mais óleo ao bolo, de maneira que o mesmo ficasse mais úmido (moist). Assim, ela criou uma ação de pull request. 
+Christiano Santim (master) reflections $ cd ~
+Christiano Santim ~ $ cd version-control
+Christiano Santim version-control $ cd recipes
+Christiano Santim (different-oil) recipes $ git checkout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+Christiano Santim (master) recipes $ git pull origin master
+From https://github.com/chrisgssantim/recipes
+ * branch            master     -> FETCH_HEAD
+Already up-to-date.
+Christiano Santim (master) recipes $ git checkout different-oil
+Switched to branch 'different-oil'
+Christiano Santim (different-oil) recipes $ git merge master different-oil
+Already up-to-date.
+Christiano Santim (different-oil) recipes $ git log
+commit 2a9a9a852674cf2eac5be56e5587609b8a11bd0e (HEAD -> different-oil, origin/d                                                                                                                                                                                               ifferent-oil)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 16:11:25 2017 -0300
+
+    Change vegetable oil to canola oil
+
+commit 126b8da5943d47bd0ea78e61839a06c3d5b19947 (origin/master, origin/HEAD, mas                                                                                                                                                                                               ter)
+Merge: 988c99a a5a8f2e
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:59:02 2017 -0300
+
+    Merge remote-tracking branch 'origin/master'
+
+commit a5a8f2eb813075791c46f9363a0ea60f170ec31c
+Author: Sarah Spikes <sarah+github@udacity.com>
+Date:   Tue Sep 19 12:19:07 2017 -0300
+
+    Remove cumin from chili
+
+commit 988c99afaf3618c97de6bfc9f9a2e9350e04a3fb
+Author: Christiano Santim <christianosantim@gmail.com>
+Christiano Santim (different-oil) recipes $ bash sarah_changes_2.sh https://gith                                                                                                                                                                                               ub.com/chrisgssantim/recipes
+Cloning into 'recipes'...
+remote: Counting objects: 31, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 31 (delta 0), reused 1 (delta 0), pack-reused 29
+Unpacking objects: 100% (31/31), done.
+warning: LF will be replaced by CRLF in cake-recipe.txt.
+The file will have its original line endings in your working directory.
+[master 431fb3a] Merge pull request from more-oil
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 340 bytes | 340.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/chrisgssantim/recipes
+   126b8da..431fb3a  master -> master
+Christiano Santim (different-oil) recipes $ subl cake-rcipe.txt
+Christiano Santim (different-oil) recipes $ sucl cake-recipe.txt
+bash: sucl: command not found
+Christiano Santim (different-oil) recipes $ subl cake-recipe.txt
+Christiano Santim (different-oil *) recipes $ git add cake-recipe.txt
+Christiano Santim (different-oil +) recipes $ git commit
+[different-oil 99f78a0] Add more oil
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Christiano Santim (different-oil) recipes $ git log
+commit 99f78a05189b01176fa2af615348e1a3f0c93a01 (HEAD -> different-oil)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 17:33:33 2017 -0300
+
+    Add more oil
+
+commit 2a9a9a852674cf2eac5be56e5587609b8a11bd0e (origin/different-oil)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 16:11:25 2017 -0300
+
+    Change vegetable oil to canola oil
+
+commit 126b8da5943d47bd0ea78e61839a06c3d5b19947 (origin/master, origin/HEAD, mas                                                                                                                                                                                               ter)
+Merge: 988c99a a5a8f2e
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:59:02 2017 -0300
+
+    Merge remote-tracking branch 'origin/master'
+
+commit a5a8f2eb813075791c46f9363a0ea60f170ec31c
+Author: Sarah Spikes <sarah+github@udacity.com>
+Date:   Tue Sep 19 12:19:07 2017 -0300
+Christiano Santim (different-oil) recipes $ git merge master different-oil
+Already up-to-date.
+Christiano Santim (different-oil) recipes $ git checkout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+Christiano Santim (master) recipes $ git merge master different-oil
+Updating 126b8da..99f78a0
+Fast-forward
+ cake-recipe.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Christiano Santim (master) recipes $ git branch -d different-oil
+Deleted branch different-oil (was 99f78a0).
+Christiano Santim (master) recipes $ git push origin master
+To https://github.com/chrisgssantim/recipes.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/chrisgssantim/recipes.git                                                                                                                                                                                               '
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+Christiano Santim (master) recipes $ git log
+commit 99f78a05189b01176fa2af615348e1a3f0c93a01 (HEAD -> master)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 17:33:33 2017 -0300
+
+    Add more oil
+
+commit 2a9a9a852674cf2eac5be56e5587609b8a11bd0e (origin/different-oil)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 16:11:25 2017 -0300
+
+    Change vegetable oil to canola oil
+
+commit 126b8da5943d47bd0ea78e61839a06c3d5b19947 (origin/master, origin/HEAD)
+Merge: 988c99a a5a8f2e
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:59:02 2017 -0300
+
+    Merge remote-tracking branch 'origin/master'
+
+commit a5a8f2eb813075791c46f9363a0ea60f170ec31c
+Author: Sarah Spikes <sarah+github@udacity.com>
+Date:   Tue Sep 19 12:19:07 2017 -0300
+
+Christiano Santim (master) recipes $ git pull origin master
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 7 (delta 5), reused 5 (delta 3), pack-reused 0
+Unpacking objects: 100% (7/7), done.
+From https://github.com/chrisgssantim/recipes
+ * branch            master     -> FETCH_HEAD
+   126b8da..a258dec  master     -> origin/master
+Auto-merging cake-recipe.txt
+CONFLICT (content): Merge conflict in cake-recipe.txt
+Automatic merge failed; fix conflicts and then commit the result.
+Christiano Santim (master *+|MERGING) recipes $ subl cake-recipe.txt
+Christiano Santim (master *+|MERGING) recipes $ git add
+Nothing specified, nothing added.
+Maybe you wanted to say 'git add .'?
+Christiano Santim (master *+|MERGING) recipes $ git pull origin master
+error: Pulling is not possible because you have unmerged files.
+hint: Fix them up in the work tree, and then use 'git add/rm <file>'
+hint: as appropriate to mark resolution and make a commit.
+fatal: Exiting because of an unresolved conflict.
+Christiano Santim (master *+|MERGING) recipes $ git add cake-recipe.txt
+Christiano Santim (master|MERGING) recipes $ git commit
+[master 30051c8] Merge branch 'master' of https://github.com/chrisgssantim/recip                                                                                                                                                                                               es
+Christiano Santim (master) recipes $ git pull origin master
+From https://github.com/chrisgssantim/recipes
+ * branch            master     -> FETCH_HEAD
+Already up-to-date.
+Christiano Santim (master) recipes $ git log
+commit 30051c8fba932e6285ce3198d55e6487719dbb29 (HEAD -> master)
+Merge: 99f78a0 a258dec
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 17:44:46 2017 -0300
+
+    Merge branch 'master' of https://github.com/chrisgssantim/recipes
+
+commit a258decee5f2a948182f745dfdadb182bc60aa30 (origin/master, origin/HEAD)
+Merge: 431fb3a 4092509
+Author: chrisgssantim <32075180+chrisgssantim@users.noreply.github.com>
+Date:   Tue Sep 19 17:39:05 2017 -0300
+
+    Merge pull request #1 from chrisgssantim/different-oil
+
+    Change vegetable oil to canola oil
+
+commit 4092509d69be8e98cc0867428ff1d6413193e928
+Merge: 2a9a9a8 431fb3a
+Author: chrisgssantim <32075180+chrisgssantim@users.noreply.github.com>
+Date:   Tue Sep 19 17:38:45 2017 -0300
+
+    Merge branch 'master' into different-oil
+
+Christiano Santim (master) recipes $ git push origin master
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 451 bytes | 451.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 2 local objects.
+To https://github.com/chrisgssantim/recipes.git
+   a258dec..30051c8  master -> master
+Christiano Santim (master) recipes $ git log --graph --oneline
+*   30051c8 (HEAD -> master, origin/master, origin/HEAD) Merge branch 'master' o                                                                                                                                                                                               f https://github.com/chrisgssantim/recipes
+|\
+| *   a258dec Merge pull request #1 from chrisgssantim/different-oil
+| |\
+| | *   4092509 Merge branch 'master' into different-oil
+| | |\
+| | |/
+| |/|
+| * | 431fb3a Merge pull request from more-oil
+* | | 99f78a0 Add more oil
+| |/
+|/|
+* | 2a9a9a8 (origin/different-oil) Change vegetable oil to canola oil
+|/
+*   126b8da Merge remote-tracking branch 'origin/master'
+|\
+| * a5a8f2e Remove cumin from chili
+* | 988c99a Add spice
+|/
+* 18d8be9 Homus - partial recipe
+* 15bd0e1 Update README.md
+* a6a2f99 Add a chili recipe
+:...skipping...
+*   30051c8 (HEAD -> master, origin/master, origin/HEAD) Merge branch 'master' of https://github.com/chrisgssantim/recipes
+|\
+| *   a258dec Merge pull request #1 from chrisgssantim/different-oil
+| |\
+| | *   4092509 Merge branch 'master' into different-oil
+| | |\
+| | |/
+| |/|
+| * | 431fb3a Merge pull request from more-oil
+* | | 99f78a0 Add more oil
+| |/
+|/|
+* | 2a9a9a8 (origin/different-oil) Change vegetable oil to canola oil
+|/
+*   126b8da Merge remote-tracking branch 'origin/master'
+|\
+| * a5a8f2e Remove cumin from chili
+* | 988c99a Add spice
+|/
+* 18d8be9 Homus - partial recipe
+* 15bd0e1 Update README.md
+* a6a2f99 Add a chili recipe
+* b361250 Add a cake and frosting recipe
+* 2050b37 Add content to README
+* 267c56d Initial commit
+
+Did you merge the changes on the command line instead of using the "Merge pull request button" on GitHub? That's fine, but merging the pull request on GitHub can be nice because then the commit message will contain the pull request number, which makes it easy to see all the comments left on that pull request.
+Cabe citar que o comando git log –n 1 mostra apenas o commit mais atual !!!
+Reflexão: quando usar um branch separado
+Você acabou de ver que o fluxo de trabalho ao fazer alterações em um branch separado é mais complexo que trabalhar diretamente em um master, principalmente quando você precisa se atualizar com as alterações feitas por outras pessoas. Em vez de efetuar pull e push, você precisa efetuar pull das alterações no branch master local, mesclar o master local no branch (different-oil, no nosso caso), efetuar push no branch para o remoto e, finalmente, mesclar o branch no master, localmente ou no GitHub.
+Bifurcar o repositório e clonar sua bifurcação
+Agora que você já aprendeu a bifurcar um repositório, efetue push das alterações para a bifurcação e efetue uma requisição pull. Você estará pronto para contribuir com a história create-your-own-adventure que você viu no início da lição. Para isso, primeiro bifurque este repositório. Em seguida, clone sua bifurcação e faça um branch para efetuar suas alterações.
+Observação: Você pode fazer suas alterações diretamente no branch master na sua bifurcação, mas ao contribuir com um repositório público, é uma prática padrão fazer as alterações em um branch que não seja master dentro da bifurcação. Dessa forma, você pode facilmente manter seu branch master atualizado com o master do repositório original e mesclar as alterações do master em seu branch quando estiver pronto.
+Observação para usuários do Windows: A história cresceu tanto que excede o limite de tamanho do caminho do Windows. Se você encontrar um erro ao clonar, poderá solucionar isso modificando uma configuração definida. Execute este comando no git bash: git config --system core.longpaths true.
+Fazer uma alteração na história
+Faça uma alteração real na história. Para obter instruções sobre como fazê-lo, leia o README no repositório create-your-own-adventure.
+Efetuar uma requisição pull
+Você deve efetuar uma requisição pull contendo suas alterações no repositório original. Para fazer isso, clique no botão \"pull request\" do seu branch como você já fez antes, mas nesse momento, deixe o repositório original como base.
+Solicitar a mesclagem da requisição pull
+Você não tem permissão para modificar esse repositório; então, precisa de alguém na Udacity para mesclar sua requisição pull. Nossa prestativa Casey talvez consiga mesclar sua requisição pull automaticamente. Para que sua requisição pull seja mesclada automaticamente, você precisará seguir as diretrizes no README do repositório e, além disso, você não poderá excluir nem modificar as linhas. Essa restrição sobre exclusões é porque Casey não quer mesclar uma solicitação que exclua acidentalmente parte da história e que ela não consiga diferenciar entre uma exclusão acidental e uma modificação intencional. Para solicitar uma mesclagem automática, deixe um comentário na requisição pull contendo \"@casey-collab\". Por exemplo \"Revise isto, @casey-collab\". Deixe o comentário na guia \"Conversation\" da requisição pull, não na guia \"Files changed\".
+Há algumas requisições pull válidas que Casey não poderá mesclar. Por exemplo, ela não aceitará uma requisição pull que corrija um erro ortográfico, uma vez que isso modifica uma linha. Se quiser fazer uma requisição pull que Casey não consiga mesclar, fique à vontade para fazer isso, e alguém da Udacity mesclará a requisição pull se tivermos tempo. No entanto, não conseguimos garantir uma resposta a essas requisições pull.
+Caso necessário, atualize sua requisição pull
+Se alguém mesclar sua requisição pull ou deixar um comentário, o GitHub enviará um email e o informará. Se for solicitado que você faça algumas alterações, efetue push dessas alterações para sua bifurcação para atualizar a requisição pull. Deixe claro para o revisor que ele deve verificar novamente!
+Se a sua requisição pull causar um conflito de mesclagem e você não souber resolvê-lo, veja o próximo vídeo para obter instruções.
