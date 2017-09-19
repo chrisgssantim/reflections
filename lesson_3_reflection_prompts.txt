@@ -95,8 +95,6 @@ Após comando git push, o branch local é o mesmo que será levado para o github
 Se clicarmos na lista de commits do Githubs veremos apenas as commits enviadas para a plataforma, ou seja, não necessariamente representam o local do nosso computador, onde podemos verificar todas as commits de determinado repositório mediante uso do comando git log.
 Diretamente do site do github pode-se criar e editar arquivos de texto !!!!!!!!
 Também via Github pode-se criar commits diretamente, os quais podem ser editados por outros usuários além de quem os criou. O primeiro commit a ser criado via Github será o arquivo lesson_3_reflection_prompts.txt, que terá a priori o conteúdo desta seção referente a aula 3 neste presente documento.
-© 2017 GitHub, Inc.
-
 Agora a versão local está desatualizada (precisa-se atualizar o braanch master no computador local) em relação à versão remota do GitHub. Para que os repositórios fiquem sincronizados novamente, efetua-se o comando: git pull.
 Entrando com git pull origin master, tem-se que:
 Christiano Santim (master) reflections $ git log
@@ -135,3 +133,246 @@ Onde estava seu commit?
 Antes de executar git push, sua alteração deve ter existido apenas localmente via git log. Os commits não serão compartilhados automaticamente em remotos - você precisa efetuar push manualmente no branch para compartilhar alterações.
 Após executar git push, sua alteração deve ter existido localmente e na bifurcação. Ela não deve ter existido no repositório de Larry, que é o repositório que você bifurcou. Em primeiro lugar, você bifurcou porque não tem permissão para alterar o repositório de Larry!
 
+Geração de conflitos devido a atividade de colaboração
+Para tanto, será usado o arquivo chili-recipe.txt. Serão efetuadas alterações de parte a parte para se obter e resolver conflitos entre as versões salvas em commit.
+Simular as alterações de Sarah
+Na seção Materiais para baixar, há um arquivo chamado sarah_changes.sh, que contém o código para parecer que a Sarah modificou o seu fork no GitHub. Para executar o código, baixe o arquivo e use Git Bash ou o terminal cd para o diretório onde você o salvou. Digite bash sarah_changes.sh seguido de um espaço e da URL da bifurcação. Por exemplo, se Caroline estiver executando o código, ela digitará bash sarah_changes.sh https://github.com/cbuckey-uda/recipes.git, mas você deve usar a URL do seu fork, e não a de Caroline. Se não tiver configurado uma senha em cache, você será solicitado a inserir o nome de usuário e a senha do GitHub.
+
+Que commits existem e onde?
+O commit por Larry que adicionou a receita de chili deve estar nos dois locais, pois ele estava presente no repositório original antes da bifurcação. Seu commit, adicionando um novo tempero só deve estar presente localmente, pois você fez o commit localmente, mas sem push. O commit by Sarah que remove o cominho deve estar presente apenas no GitHub, pois Sarah fez a alteração e efetuou push para o GitHub, mas ainda sem pull.
+(ainda ainda não foi dado git push na alteração local by chris de adição de spice)
+Git pull equivale aos comandos git fetch seguido de git merge
+Em suma, para atualizar todas as versões, precisamos execultar um merge local e remoto.
+ 
+Dêe zoom na tela do meio pois nela é apresentado os repositórios do Chris local e do GitHub antes do uso de git fetch. Pode-se notar que no GH temos chili e o commit novo da Sarah de nome/label “no cumin” (este último é o novo branch master). Já no repositório local, temos chili (origin/master), que é o mais atual da clonagem do repositório bifurcado do Larry, e a mudança proposto por Chris no arquivo chili (agora o branch master neste repositório local).
+Após executar o comando git fetch, o git fetch busca o arquivo “no cumin” do GH e atualiza o branch origin/master para este arquivo !!!!!!!!!!!!!!!!! O master ainda está (pode-se dizer como “aponta para”) no commit da adição de spice (que ainda não foi lançado para o GH via comando git push). A foto abaixo (tela do meio) mostra o diagrama, quando ainda não foi feita a fusão/merge/mescla git merge master origin/master.
+ 
+O comando git branch mostra os branches presentes no repositório, já o comando git branch –a, fornece a seguinte saída.
+Christiano Santim (master) recipes $ git branch
+* master
+Christiano Santim (master) recipes $ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+Christiano Santim (master) recipes $
+
+Após dar o comando de bash sarah_changes.sh http... e dar git fetch origin a saída log e status é dado abaixo. Por fim, ainda introduziu-se o comando git merge master origin/master
+Christiano Santim (master) recipes $ git fetch origin
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 3 (delta 2), reused 3 (delta 2), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/chrisgssantim/recipes
+   18d8be9..a5a8f2e  master     -> origin/master
+Christiano Santim (master) recipes $ git status
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 1 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        sarah_changes.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+Christiano Santim (master) recipes $ git log
+commit 988c99afaf3618c97de6bfc9f9a2e9350e04a3fb (HEAD -> master)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:13:17 2017 -0300
+
+    Add spice
+
+commit 18d8be92d97be1de38a20ac94468adbe4b767eb3
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 11:49:59 2017 -0300
+
+    Homus - partial recipe
+
+commit 15bd0e1c52c6e11aaea594cf9a63d19c2baea0ad
+Author: Larry Madrigal <larry@knowlabs.com>
+Date:   Wed Nov 16 13:51:52 2016 -0800
+
+    Update README.md
+
+commit a6a2f991a1bb60e1dec7c5d68c8393b70ea6f7f6
+Author: Larry Madrigal <larry@udacity.com>
+Date:   Thu Sep 25 11:08:27 2014 -0700
+
+    Add a chili recipe
+Christiano Santim (master) recipes $ git merge master origin/master
+Auto-merging chili-recipe.txt
+CONFLICT (content): Merge conflict in chili-recipe.txt
+Automatic merge failed; fix conflicts and then commit the result.
+Christiano Santim (master *+|MERGING) recipes $
+
+Como esperado, temos aqui um conflito de fusão/merge/mesclagem. Logo, deve-se abrir o arquivo chili-recipe.txt. Usando o comando subl chili-recipe.txt, abre-se o arquivo, com a seguinte saída:
+Ingredients:
+…
+Directions:
+ 1. Brown the ground beef in a large bot and drain off the excess fat.
+<<<<<<< HEAD   #aqui a versão do Chris
+ 2. Add the tomato sauce, chili powder, spice, cumin, oregano, salt, and cayenne.
+||||||| merged common ancestors #aqui a versão anterior as mudanças (original)
+ 2. Add the tomato sauce, chili powder, cumin, oregano, salt, and cayenne.
+=======
+ 2. Add the tomato sauce, chili powder, oregano, salt, and cayenne.
+>>>>>>> origin/master #aqui a versão da Sarah
+ 3. Stir, then cover and simmer over low heat for one hour.
+ 4. Mix the corn flour and 1/2 cup water in a small bowl.  Add to chili.
+ 5. Add the beans and simmer for 10 more minutes.
+Na tela abaixo são apresentados os comandos para entrada no arquivo chili-recipes.txt, dado acima, e os comandos após alteração (a versão de Sarah foi mantida somada ao spice que Chris havia colocado em sua versão). Por fim, running the comando git pull podemos verificar que já está atualizado. Assim, ratifica-se o que já havíamos comentado, que git pull equivale a git fetch seguido de git merge.
+Christiano Santim (master *+|MERGING) recipes $ subl chili-recipe.txt
+Christiano Santim (master *+|MERGING) recipes $ git status
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 1 and 1 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+        both modified:   chili-recipe.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        sarah_changes.sh
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Christiano Santim (master *+|MERGING) recipes $ git add chili-recipe.txt
+Christiano Santim (master +|MERGING) recipes $ git commit
+[master 126b8da] Merge remote-tracking branch 'origin/master'
+Christiano Santim (master) recipes $ git pull origin master
+From https://github.com/chrisgssantim/recipes
+ * branch            master     -> FETCH_HEAD
+Already up-to-date.
+Christiano Santim (master) recipes $ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        sarah_changes.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+Christiano Santim (master) recipes $
+
+Bom, até agora mesclou-se as versões de Sarah e Chris. Dando git log temos agora todos os commits no repositório local
+Christiano Santim (master) recipes $ git log
+commit 126b8da5943d47bd0ea78e61839a06c3d5b19947 (HEAD -> master, origin/master, origin/HEAD)
+Merge: 988c99a a5a8f2e
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:59:02 2017 -0300
+
+    Merge remote-tracking branch 'origin/master'
+
+commit a5a8f2eb813075791c46f9363a0ea60f170ec31c
+Author: Sarah Spikes <sarah+github@udacity.com>
+Date:   Tue Sep 19 12:19:07 2017 -0300
+
+    Remove cumin from chili
+
+commit 988c99afaf3618c97de6bfc9f9a2e9350e04a3fb
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:13:17 2017 -0300
+
+    Add spice
+
+commit 18d8be92d97be1de38a20ac94468adbe4b767eb3
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 11:49:59 2017 -0300
+
+    Homus - partial recipe
+
+commit 15bd0e1c52c6e11aaea594cf9a63d19c2baea0ad
+Author: Larry Madrigal <larry@knowlabs.com>
+Date:   Wed Nov 16 13:51:52 2016 -0800
+
+    Update README.md
+…
+Assim como na pg. do GitHub
+ 
+
+Como Efetuar Uma Requisição Pull
+Instruções
+Digamos que você execute cada um dos comandos fornecidos em ordem, com o branch local master com check-out. Verifique cada local (diretório de trabalho, área de preparo, master local ou master do GitHub) onde os arquivos seriam alterados por esse comando.
+Sarah diz, sem querer, que o master local é a única coisa que muda quando você executa git pull origin master. Mas, o diretório de trabalho e a área de preparo também serão atualizados quando você executar git pull. Por isso, ao executar git pull, você vê as atualizações de arquivos, e não apenas a saída de git log.
+
+Se eu quiser o feedback de determinado arquivo antes de atualizar os repositórios, neste caso, a bifurcação no GH do Larry e o local do computador do Chris, eu preciso criar um branch local da mudança a priori. Em seguinda passa-se a alteração para a área de bifurcação. Agora, na fork (bifurcação) a alteração é compartilhada no GH de maneira que Sarah pode ver. Um mecanismo que torna mais fácil para Sarah ver exatamente (e adicionar comentários, se quiser) o que foi alterado é o pull request (requisição pull). Quando estiverem prontas, a alteração é fundida no branch master. O arquivo a ser alterado é a receita de bolo (cake-recipe.txt).
+ Christiano Santim ~ $ cd version-control
+Christiano Santim version-control $ cd recipes
+Christiano Santim (master) recipes $ git branch
+* master
+Christiano Santim (master) recipes $ git branch different-oil
+Christiano Santim (master) recipes $ git branch
+  different-oil
+* master
+Christiano Santim (master) recipes $ git checkout different-oil
+Switched to branch 'different-oil'
+Christiano Santim (different-oil) recipes $ subl cake-recipe.txt
+Christiano Santim (different-oil *) recipes $ git status
+On branch different-oil
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   cake-recipe.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        sarah_changes.sh
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Christiano Santim (different-oil *) recipes $ git add cake-recipe.txt
+Christiano Santim (different-oil +) recipes $ git commit
+[different-oil 2a9a9a8] Change vegetable oil to canola oil
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Christiano Santim (different-oil) recipes $ git log
+commit 2a9a9a852674cf2eac5be56e5587609b8a11bd0e (HEAD -> different-oil)
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 16:11:25 2017 -0300
+
+    Change vegetable oil to canola oil
+
+commit 126b8da5943d47bd0ea78e61839a06c3d5b19947 (origin/master, origin/HEAD, master)
+Merge: 988c99a a5a8f2e
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:59:02 2017 -0300
+
+    Merge remote-tracking branch 'origin/master'
+
+commit a5a8f2eb813075791c46f9363a0ea60f170ec31c
+Author: Sarah Spikes <sarah+github@udacity.com>
+Date:   Tue Sep 19 12:19:07 2017 -0300
+
+    Remove cumin from chili
+
+commit 988c99afaf3618c97de6bfc9f9a2e9350e04a3fb
+Author: Christiano Santim <christianosantim@gmail.com>
+Date:   Tue Sep 19 12:13:17 2017 -0300
+Christiano Santim (different-oil) recipes $
+Christiano Santim (different-oil) recipes $ git push origin different-oil
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 318 bytes | 318.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/chrisgssantim/recipes.git
+ * [new branch]      different-oil -> different-oil
+Christiano Santim (different-oil) recipes $
+
+Agora deve-se fazer um pull request (um outro nome para esta ação seria pull merge) no novo branch different-oil.
+Isto é feito via GH. E agora a Sarah poderá ver que Chris, através do pull request, gostaria de fundir as alterações no branch master.
+Bom, Chris quer que Sarah faça um merge do seu branch different-oil no branch master. Opa, mas Sarah ao analisar o pull request verificou um erro de ortografia, o qual deveria ser corrigido. Assim, Sarah pode deixar comentários de duas maneiras. Usando a toll write logo abaixo ao commit, ou comentar inline clicando no sinal de +.
+Cabe citar que o botão para Sarah clicar caso estivesse tudo OK seria o MERGE PULL REQUEST. Quando este botão está habilitado, sinaliza que não existe conflito entre as versões a serem fundidas. Para evitar potenciais erros, de maneira que o merge não seja possível, é preferível que o Chris faça primeiramente a fusão com seu branch master local. Assim, caso ocorra conflitos, o Chris poderia resolvê-los, antes executar um pull request para outra(o) pessoa/usuário.
+Em suma, uma requisição pull request fará um merge entre branches no GH.
+ 
+No quadro do meio acima, este merge entre branches ocorreu no GH, mas ainda não foi passado para o repositório local. Para tanto necessita-se de um git pull origin master
